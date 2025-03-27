@@ -1,5 +1,8 @@
 from playwright.sync_api import Page
 
+from PO.login import LoginPage
+
+
 class HomePage:
 
     def __init__(self, page: Page):
@@ -10,6 +13,7 @@ class HomePage:
     def navigate(self):
         self.page.goto("https://www.otodom.pl/")
         self.accept_cookies()
+        return self
 
     def accept_cookies(self):
         if self.page.is_visible(self.accept_cookies_selector):
@@ -18,4 +22,5 @@ class HomePage:
     def login(self):
         self.page.wait_for_selector(self.login_selector_xpath)
         self.page.click(self.login_selector_xpath)
+        return LoginPage(self.page)
 

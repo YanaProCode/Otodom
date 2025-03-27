@@ -7,7 +7,7 @@ class LoginPage:
         self.login_header = "//*[@id=\"__next\"]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div[1]/header"
         self.email_input = "#username"
         self.password_input = "#password"
-        self.submit_button = "//*[@id=\"__next\"]/div/div/div/div/div[1]/div[2]/div[2]/div[2]/form/button[2]"
+        self.submit_button = "//button[@type='submit']"
         self.favourites_button = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/div[1]/a"
 
 
