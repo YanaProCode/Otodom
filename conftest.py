@@ -9,13 +9,18 @@ from selenium.webdriver.safari.service import Service as SafariService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
-config = configparser.ConfigParser()
-config.read('config.properties')
+def pytest_addoption(parser):
+    parser.addoption(
+        "--browser", action="store", default="chromium", help="Browser to run tests with: chromium, firefox, or webkit"
+    )
+    parser.addoption(
+        "--tool", action="store", default="playwright", help="Tool to run tests with: playwright or selenium"
+    )
 
 @pytest.fixture(scope="function")
-def page():
-    tool = config.get('DEFAULT', 'tool', fallback='playwright')
-    browser_type = config.get('DEFAULT', 'browser', fallback='chromium')
+def page(request):
+    tool = request.config.getoption("--tool")
+    browser_type = request.config.getoption("--browser")
 
     if tool == 'playwright':
         with sync_playwright() as p:
@@ -35,8 +40,11 @@ def page():
             driver = webdriver.Safari(service=SafariService())
         else:
             raise ValueError(f"Unsupported browser type: {browser_type}")
+        driver.maximize_window()
 
         yield driver
         driver.quit()
     else:
         raise ValueError(f"Unsupported tool: {tool}")
+
+
