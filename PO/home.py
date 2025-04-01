@@ -24,12 +24,7 @@ class HomePage:
         if self.tool == 'playwright':
             if self.page.is_visible(self.accept_cookies_selector):
                 self.page.click(self.accept_cookies_selector)
-        #elif self.tool == 'selenium':
-            #try:
-                #accept_button = self.page.find_element(By.CSS_SELECTOR, self.accept_cookies_selector)
-                #accept_button.click()
-            #except:
-                #pass
+
         elif self.tool == 'selenium':
             try:
                 WebDriverWait(self.page, 10).until(
@@ -42,13 +37,10 @@ class HomePage:
         if self.tool == 'playwright':
             self.page.wait_for_selector(self.login_selector_xpath)
             self.page.click(self.login_selector_xpath)
-        #elif self.tool == 'selenium':
-            #login_button = self.page.find_element(By.XPATH, self.login_selector_xpath)
-            #login_button.click()
+
 
         elif self.tool == 'selenium':
             login_button = WebDriverWait(self.page, 10).until(
                 EC.element_to_be_clickable((By.XPATH, self.login_selector_xpath))
             )
             login_button.click()
-
