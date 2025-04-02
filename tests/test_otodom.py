@@ -1,13 +1,12 @@
-import pytest
-from PO.home import HomePage
-from PO.login import LoginPage
-import configparser
-from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
+from PO.playwright.home import HomePage
+from PO.playwright.login import LoginPage
 from selenium.webdriver.common.by import By
 
 
-def test_login_with_correct_creds(page, request):
+def test_login_with_correct_creds(page, page_objects, request):
     tool = request.config.getoption("--tool")
+    HomePage, LoginPage = page_objects
+
     home_page = HomePage(page, tool)
     login_page = LoginPage(page, tool)
     home_page.navigate()
@@ -20,8 +19,10 @@ def test_login_with_correct_creds(page, request):
     elif tool == 'selenium':
         assert page.find_element(By.XPATH, '//*[@id="__next"]/div[1]/div/div/div[2]/div[1]/a'), 'Login failed'
 
-def test_login_with_incorrect_creds(page, request):
+def test_login_with_incorrect_creds(page, page_objects, request):
     tool = request.config.getoption("--tool")
+    HomePage, LoginPage = page_objects
+
     home_page = HomePage(page, tool)
     login_page = LoginPage(page, tool)
     home_page.navigate()
@@ -34,8 +35,10 @@ def test_login_with_incorrect_creds(page, request):
     elif tool == 'selenium':
         assert page.find_element(By.ID, '#error-banner'), 'Error message not displayed'
 
-def test_open_chats(page, request):
+def test_open_chats(page, page_objects, request):
     tool = request.config.getoption("--tool")
+    HomePage, LoginPage = page_objects
+
     home_page = HomePage(page, tool)
     login_page = LoginPage(page, tool)
     home_page.navigate()
@@ -49,8 +52,10 @@ def test_open_chats(page, request):
     elif tool == 'selenium':
         assert page.find_element(By.XPATH, "//*[@id=\"__next\"]/main/div[2]/div[2]/div/div[1]/h3"), 'Chats not found'
 
-def test_open_favourite_ads(page, request):
+def test_open_favourite_ads(page, page_objects, request):
     tool = request.config.getoption("--tool")
+    HomePage, LoginPage = page_objects
+
     home_page = HomePage(page, tool)
     login_page = LoginPage(page, tool)
     home_page.navigate()

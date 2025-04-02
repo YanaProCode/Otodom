@@ -1,4 +1,5 @@
 import pytest
+import importlib
 from playwright.sync_api import sync_playwright
 from playwright_stealth import stealth_sync
 import configparser
@@ -49,4 +50,19 @@ def page(request):
     else:
         raise ValueError(f"Unsupported tool: {tool}")
 
+
+@pytest.fixture(scope="function")
+def page_objects(request):
+    tool = request.config.getoption("--tool")
+
+    if tool == 'playwright':
+        HomePage = importlib.import_module('PO.playwright.home').HomePage
+        LoginPage = importlib.import_module('PO.playwright.login').LoginPage
+    elif tool == 'selenium':
+        HomePage = importlib.import_module('PO.selenium.home').HomePage
+        LoginPage = importlib.import_module('PO.selenium.login').LoginPage
+    else:
+        raise ValueError(f"Unsupported tool: {tool}")
+
+    return HomePage, LoginPage
 
