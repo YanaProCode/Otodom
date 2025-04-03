@@ -13,17 +13,17 @@ pipeline {
         }
         stage('Setup') {
             steps {
-                sh '''
-                python3 -m venv venv
-                source venv/bin/activate
+                bat '''
+                python -m venv venv
+                call venv\\Scripts\\activate
                 pip install -r requirements.txt
                 '''
             }
         }
         stage('Run Tests') {
             steps {
-                sh '''
-                source venv/bin/activate
+                bat '''
+                call venv\\Scripts\\activate
                 pytest --browser=chromium --tool=playwright
                 '''
             }
