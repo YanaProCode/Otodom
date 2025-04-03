@@ -2,3 +2,4 @@ pytest
 selenium
 playwright
 pytest-playwright
+playwright-stealth

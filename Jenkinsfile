@@ -16,7 +16,7 @@ pipeline {
                 bat '''
                 %PYTHON_PATH% -m venv venv
                 call venv\\Scripts\\activate
-                pip install pytest selenium playwright pytest-playwright
+                pip install -r requirements.txt
                 '''
             }
         }
