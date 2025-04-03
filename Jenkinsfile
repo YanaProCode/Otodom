@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/YanaProCode/Otodom.git'
+                git branch: 'main', url: 'https://github.com/YanaProCode/Otodom.git'
             }
         }
         stage('Setup') {
