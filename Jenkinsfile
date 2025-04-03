@@ -1,11 +1,23 @@
 pipeline {
     agent any
 
-    environment {
-        PYTHON_VERSION = '3.10.6'
-    }
-
     stages {
+        stage('Install Chocolatey') {
+            steps {
+                bat '''
+                @echo off
+                SET "CHOCO_INSTALL=%SystemDrive%\\choco"
+                IF NOT EXIST "%CHOCO_INSTALL%" (
+                    powershell -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+                )
+                '''
+            }
+        }
+        stage('Install Python') {
+            steps {
+                bat 'choco install python --version=3.10.6 -y'
+            }
+        }
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/YanaProCode/Otodom.git'
@@ -16,7 +28,7 @@ pipeline {
                 bat '''
                 python -m venv venv
                 call venv\\Scripts\\activate
-                pip install -r requirements.txt
+                pip install pytest selenium playwright pytest-playwright
                 '''
             }
         }
