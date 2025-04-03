@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        CHOCO_PATH = 'C:\\ProgramData\\chocolatey\\bin\\choco.exe'
+    }
+
     stages {
         stage('Install Chocolatey') {
             steps {
@@ -15,7 +19,7 @@ pipeline {
         }
         stage('Install Python') {
             steps {
-                bat 'choco install python --version=3.10.6 -y'
+                bat '%CHOCO_PATH% install python --version=3.10.6 -y'
             }
         }
         stage('Checkout') {
