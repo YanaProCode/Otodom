@@ -18,8 +18,8 @@ class LoginPage:
         self.favourite_ads_header = "#link-SAVED_ADS"
         self.error_banner = "#error-banner"
         self.chats_icon = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/a/svg"
-        self.account_icon = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/div[2]/a/div/svg[2]"
-        self.chats_link = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/div[2]/ul/li[2]/a"
+        self.account_icon = "//a[@data-cy='desktop-nav-user-menu.username']"
+        self.chats_link = "//li/a[@href='/mojekonto/odpowiedzi']"
 
 
     def fill_login_form(self, email: str, password: str):
