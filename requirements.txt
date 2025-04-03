@@ -3,3 +3,4 @@ selenium
 playwright
 pytest-playwright
 playwright-stealth
+webdriver_manager
