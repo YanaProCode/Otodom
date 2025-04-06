@@ -20,6 +20,14 @@ pipeline {
                 '''
             }
         }
+        stage('Install Playwright Browsers') {
+            steps {
+                bat '''
+                call venv\\Scripts\\activate
+                playwright install
+                '''
+            }
+        }
         stage('Run Tests') {
             steps {
                 bat '''
