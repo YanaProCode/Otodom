@@ -17,6 +17,7 @@ pipeline {
                 %PYTHON_PATH% -m venv venv
                 call venv\\Scripts\\activate
                 pip install -r requirements.txt
+                pip install allure-pytest
                 '''
             }
         }
@@ -32,7 +33,15 @@ pipeline {
             steps {
                 bat '''
                 call venv\\Scripts\\activate
-                pytest --test-browser=chromium --test-tool=playwright
+                pytest --test-browser=chromium --test-tool=playwright --alluredir=allure-results
+                '''
+            }
+        }
+    }
+    stage('Generate Allure Report') {
+            steps {
+                bat '''
+                allure generate allure-results --clean -o allure-report
                 '''
             }
         }
@@ -40,7 +49,7 @@ pipeline {
 
     post {
         always {
-            junit 'reports/*.xml'
+            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
         }
     }
 }
