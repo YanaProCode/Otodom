@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 
 
 def test_login_with_correct_creds(page, page_objects, request):
-    tool = request.config.getoption("--tool")
+    tool = request.config.getoption("--test-tool")
     HomePage, LoginPage = page_objects
 
     home_page = HomePage(page, tool)
@@ -20,7 +20,7 @@ def test_login_with_correct_creds(page, page_objects, request):
         assert page.find_element(By.XPATH, '//*[@id="__next"]/div[1]/div/div/div[2]/div[1]/a'), 'Login failed'
 
 def test_login_with_incorrect_creds(page, page_objects, request):
-    tool = request.config.getoption("--tool")
+    tool = request.config.getoption("--test-tool")
     HomePage, LoginPage = page_objects
 
     home_page = HomePage(page, tool)
@@ -36,7 +36,7 @@ def test_login_with_incorrect_creds(page, page_objects, request):
         assert page.find_element(By.ID, '#error-banner'), 'Error message not displayed'
 
 def test_open_chats(page, page_objects, request):
-    tool = request.config.getoption("--tool")
+    tool = request.config.getoption("--test-tool")
     HomePage, LoginPage = page_objects
 
     home_page = HomePage(page, tool)
@@ -53,7 +53,7 @@ def test_open_chats(page, page_objects, request):
         assert page.find_element(By.XPATH, "//*[@id=\"__next\"]/main/div[2]/div[2]/div/div[1]/h3"), 'Chats not found'
 
 def test_open_favourite_ads(page, page_objects, request):
-    tool = request.config.getoption("--tool")
+    tool = request.config.getoption("--test-tool")
     HomePage, LoginPage = page_objects
 
     home_page = HomePage(page, tool)

@@ -12,16 +12,18 @@ from webdriver_manager.firefox import GeckoDriverManager
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--browser", action="store", default="chromium", help="Browser to run tests with: chromium, firefox, or webkit"
+        "--test-browser", action="store", default="chromium",
+        help="Browser to run tests with: chromium, firefox, or webkit"
     )
     parser.addoption(
-        "--tool", action="store", default="playwright", help="Tool to run tests with: playwright or selenium"
+        "--test-tool", action="store", default="playwright",
+        help="Tool to run tests with: playwright or selenium"
     )
 
 @pytest.fixture(scope="function")
 def page(request):
-    tool = request.config.getoption("--tool")
-    browser_type = request.config.getoption("--browser")
+    tool = request.config.getoption("--test-tool")
+    browser_type = request.config.getoption("--test-browser")
 
     if tool == 'playwright':
         with sync_playwright() as p:
@@ -53,7 +55,7 @@ def page(request):
 
 @pytest.fixture(scope="function")
 def page_objects(request):
-    tool = request.config.getoption("--tool")
+    tool = request.config.getoption("--test-tool")
 
     if tool == 'playwright':
         HomePage = importlib.import_module('PO.playwright.home').HomePage

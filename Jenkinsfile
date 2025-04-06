@@ -24,7 +24,7 @@ pipeline {
             steps {
                 bat '''
                 call venv\\Scripts\\activate
-                pytest --browser=chromium --tool=playwright
+                pytest --test-browser=chromium --test-tool=playwright
                 '''
             }
         }
