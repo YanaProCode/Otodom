@@ -6,7 +6,7 @@ class HomePage:
     def __init__(self, page: PlaywrightPage, tool):
         self.page = page
         self.tool = tool
-        self.login_selector_xpath = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/a/span"
+        self.login_selector_xpath = "//div/a[@data-cy='navbar-my-account-button']"
         self.accept_cookies_selector = "#onetrust-accept-btn-handler"
 
     def navigate(self):

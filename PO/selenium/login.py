@@ -6,18 +6,18 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class LoginPage:
 
-    def __init__(self, page: PlaywrightPage, tool):
+    def __init__(self, page: SeleniumWebDriver, tool):
         self.page = page
         self.tool = tool
-        self.login_header = "//*[@id=\"__next\"]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div[1]/header"
+        self.login_header = "//button[@tabindex='-1']"
         self.email_input = "#username"
         self.password_input = "#password"
         self.submit_button = "//button[@type='submit']"
-        self.favourites_button = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/div[1]/a"
-        self.favourite_ads_link = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/div[1]/ul/li[1]/a"
-        self.favourite_ads_header = "#link-SAVED_ADS"
-        self.error_banner = "#error-banner"
-        self.chats_icon = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/a/svg"
+        self.favourites_icon = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/div[1]/a"
+        self.favourite_ads_link = "//a[@role='menuitem'][@href='/pl/zapisane/ogloszenia']"
+        self.favourite_ads_header = "link-SAVED_ADS"
+        self.error_banner = "error-banner"
+        #self.chats_icon = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/a/svg"
         self.account_icon = "//a[@data-cy='desktop-nav-user-menu.username']"
         self.chats_link = "//li/a[@href='/mojekonto/odpowiedzi']"
 
@@ -33,7 +33,7 @@ class LoginPage:
 
     def check_successful_login(self):
         WebDriverWait(self.page, 10).until(
-            EC.visibility_of_element_located((By.XPATH, self.favourites_button))
+            EC.visibility_of_element_located((By.XPATH, self.favourites_icon))
         )
 
 
@@ -41,19 +41,26 @@ class LoginPage:
         WebDriverWait(self.page, 10).until(
             EC.visibility_of_element_located((By.ID, self.error_banner))
         )
+        assert self.page.find_element(By.ID,
+                                      self.error_banner).is_displayed(), "Error message not displayed"
 
     def open_chats(self):
-        self.page.click(self.account_icon)
-        self.page.click(self.chats_link)
+        self.page.find_element(By.XPATH, self.account_icon).click()
+        self.page.find_element(By.XPATH, self.chats_link).click()
         WebDriverWait(self.page, 10).until(
-            EC.visibility_of_element_located((By.XPATH, "//*[@id=\"__next\"]/main/div[2]/div[2]/div/div[1]/h3"))
+            EC.visibility_of_element_located((By.XPATH, "//div[@data-cy='conversationsListColumn']"))
         )
-        #add is_visible
+        assert self.page.find_element(By.XPATH,
+                                      "//div[@data-cy='conversationsListColumn']").is_displayed(), "Chats not found"
 
 
     def open_favourite_ads(self):
-        self.page.click(self.favourites_button)
-        self.page.click(self.favourite_ads_link)
+        self.page.find_element(By.XPATH, self.favourites_icon).click()
+        WebDriverWait(self.page, 10).until(
+            EC.visibility_of_element_located((By.XPATH, self.favourite_ads_link))
+        )
+        self.page.find_element(By.XPATH, self.favourite_ads_link).click()
         WebDriverWait(self.page, 10).until(
             EC.visibility_of_element_located((By.ID, self.favourite_ads_header))
         )
+        assert self.page.find_element(By.ID, self.favourite_ads_header).is_displayed(), "Favourite ads not found"
