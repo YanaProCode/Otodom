@@ -1,11 +1,15 @@
 import allure
-from playwright.sync_api import Page as PlaywrightPage
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class LoginPage:
+
+    ACCOUNT_ADS_LINK = "//div/div[@role='navigation']/a[@data-cy='desktop-nav-user-menu.username']"
+    FAVOURITES_ADS_LINK = "//div/div[@role='navigation']/a[not(@data-cy='desktop-nav-user-menu.username')]"
+
+    NEWS = "//ul[@role='menu']/li/a[@role='menuitem'][2]"
 
     def __init__(self, page: SeleniumWebDriver, tool):
         self.page = page
@@ -47,8 +51,8 @@ class LoginPage:
 
     @allure.step("Open chats")
     def open_chats(self):
-        self.page.find_element(By.XPATH, self.account_icon).click()
-        self.page.find_element(By.XPATH, self.chats_link).click()
+        self.page.find_element(By.XPATH, self.ACCOUNT_ADS_LINK).click()
+        self.page.find_element(By.XPATH, self.NEWS).click()
         WebDriverWait(self.page, 10).until(
             EC.visibility_of_element_located((By.XPATH, "//div[@data-cy='conversationsListColumn']"))
         )

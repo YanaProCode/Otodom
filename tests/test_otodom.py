@@ -1,6 +1,4 @@
 import allure
-from PO.playwright.home import HomePage
-from PO.playwright.login import LoginPage
 from selenium.webdriver.common.by import By
 
 

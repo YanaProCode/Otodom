@@ -2,8 +2,6 @@ import allure
 import pytest
 import importlib
 from playwright.sync_api import sync_playwright
-from playwright_stealth import stealth_sync
-import configparser
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
@@ -33,7 +31,6 @@ def page(request):
                 viewport={"width": 1920, "height": 1080}
             )
             page = context.new_page()
-            #stealth_sync(page)
             yield page
             browser.close()
 

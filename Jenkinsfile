@@ -17,7 +17,6 @@ pipeline {
                 %PYTHON_PATH% -m venv venv
                 call venv\\Scripts\\activate
                 pip install -r requirements.txt
-                pip install allure-pytest
                 '''
             }
         }
