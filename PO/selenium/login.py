@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page as PlaywrightPage
 from selenium.webdriver.remote.webdriver import WebDriver as SeleniumWebDriver
 from selenium.webdriver.common.by import By
@@ -21,7 +22,7 @@ class LoginPage:
         self.account_icon = "//a[@data-cy='desktop-nav-user-menu.username']"
         self.chats_link = "//li/a[@href='/mojekonto/odpowiedzi']"
 
-
+    @allure.step("Fill login form")
     def fill_login_form(self, email: str, password: str):
         WebDriverWait(self.page, 10).until(
             EC.visibility_of_element_located((By.XPATH, self.login_header))
@@ -30,13 +31,13 @@ class LoginPage:
         self.page.find_element(By.CSS_SELECTOR, self.password_input).send_keys(password)
         self.page.find_element(By.XPATH, self.submit_button).click()
 
-
+    @allure.step("Check successful login")
     def check_successful_login(self):
         WebDriverWait(self.page, 10).until(
             EC.visibility_of_element_located((By.XPATH, self.favourites_icon))
         )
 
-
+    @allure.step("Check failed login")
     def check_failed_login(self):
         WebDriverWait(self.page, 10).until(
             EC.visibility_of_element_located((By.ID, self.error_banner))
@@ -44,6 +45,7 @@ class LoginPage:
         assert self.page.find_element(By.ID,
                                       self.error_banner).is_displayed(), "Error message not displayed"
 
+    @allure.step("Open chats")
     def open_chats(self):
         self.page.find_element(By.XPATH, self.account_icon).click()
         self.page.find_element(By.XPATH, self.chats_link).click()
@@ -53,7 +55,7 @@ class LoginPage:
         assert self.page.find_element(By.XPATH,
                                       "//div[@data-cy='conversationsListColumn']").is_displayed(), "Chats not found"
 
-
+    @allure.step("Open favourite ads")
     def open_favourite_ads(self):
         self.page.find_element(By.XPATH, self.favourites_icon).click()
         WebDriverWait(self.page, 10).until(
