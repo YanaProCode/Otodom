@@ -1,11 +1,7 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.10-slim'
-            args '-u root'
-        }
-    }
+    agent any
     environment {
+        DOCKER_IMAGE = 'otodom-tests'
         ALLURE_RESULTS_DIR = 'allure-results'
         ALLURE_REPORT_DIR = 'allure-report'
     }
@@ -18,25 +14,23 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build('otodom-tests')
+                    sh 'docker build -t ${DOCKER_IMAGE} .'
                 }
             }
         }
         stage('Run Tests') {
             steps {
                 script {
-                    docker.image('otodom-tests').inside {
-                        sh 'pytest --alluredir=${ALLURE_RESULTS_DIR}'
-                    }
+                    def workspace = pwd()
+                    sh "docker run --rm -v ${workspace}/${ALLURE_RESULTS_DIR}:/app/${ALLURE_RESULTS_DIR} ${DOCKER_IMAGE} pytest --alluredir=/app/${ALLURE_RESULTS_DIR}"
                 }
             }
         }
         stage('Generate Allure Report') {
             steps {
                 script {
-                    docker.image('otodom-tests').inside {
-                        sh 'allure generate ${ALLURE_RESULTS_DIR} -o ${ALLURE_REPORT_DIR} --clean'
-                    }
+                    def workspace = pwd()
+                    sh "docker run --rm -v ${workspace}/${ALLURE_RESULTS_DIR}:/app/${ALLURE_RESULTS_DIR} -v ${workspace}/${ALLURE_REPORT_DIR}:/app/${ALLURE_REPORT_DIR} ${DOCKER_IMAGE} allure generate /app/${ALLURE_RESULTS_DIR} -o /app/${ALLURE_REPORT_DIR} --clean"
                 }
             }
         }
