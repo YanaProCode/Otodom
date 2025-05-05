@@ -14,23 +14,23 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t ${DOCKER_IMAGE} .'
+                    bat 'docker build -t %DOCKER_IMAGE% .'
                 }
             }
         }
         stage('Run Tests') {
             steps {
                 script {
-                    def workspace = pwd()
-                    sh "docker run --rm -v ${workspace}/${ALLURE_RESULTS_DIR}:/app/${ALLURE_RESULTS_DIR} ${DOCKER_IMAGE} pytest --alluredir=/app/${ALLURE_RESULTS_DIR}"
+                    def workspace = pwd().replace('\\', '/')
+                    bat "docker run --rm -v ${workspace}/${ALLURE_RESULTS_DIR}:/app/${ALLURE_RESULTS_DIR} %DOCKER_IMAGE% pytest --alluredir=/app/${ALLURE_RESULTS_DIR}"
                 }
             }
         }
         stage('Generate Allure Report') {
             steps {
                 script {
-                    def workspace = pwd()
-                    sh "docker run --rm -v ${workspace}/${ALLURE_RESULTS_DIR}:/app/${ALLURE_RESULTS_DIR} -v ${workspace}/${ALLURE_REPORT_DIR}:/app/${ALLURE_REPORT_DIR} ${DOCKER_IMAGE} allure generate /app/${ALLURE_RESULTS_DIR} -o /app/${ALLURE_REPORT_DIR} --clean"
+                    def workspace = pwd().replace('\\', '/')
+                    bat "docker run --rm -v ${workspace}/${ALLURE_RESULTS_DIR}:/app/${ALLURE_RESULTS_DIR} -v ${workspace}/${ALLURE_REPORT_DIR}:/app/${ALLURE_REPORT_DIR} %DOCKER_IMAGE% allure generate /app/${ALLURE_RESULTS_DIR} -o /app/${ALLURE_REPORT_DIR} --clean"
                 }
             }
         }
