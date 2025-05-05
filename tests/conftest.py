@@ -1,3 +1,5 @@
+import sys
+import os
 import allure
 import pytest
 import importlib
@@ -9,6 +11,7 @@ from selenium.webdriver.safari.service import Service as SafariService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 def pytest_addoption(parser):
     parser.addoption(
         "--test-browser", action="store", default="chromium",

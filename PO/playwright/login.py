@@ -23,6 +23,7 @@ class LoginPage:
         self.error_banner = "#error-banner"
         #self.chats_icon = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/a/svg"
         self.chats_link = "//li/a[@href='/mojekonto/odpowiedzi']"
+        self.favourites_icon = "//*[@id=\"__next\"]/div[1]/div/div/div[2]/div[1]/a"
 
     @allure.step("Fill login form")
     def fill_login_form(self, email: str, password: str):
@@ -49,6 +50,7 @@ class LoginPage:
 
     @allure.step("Open favourite ads")
     def open_favourite_ads(self):
+        self.page.wait_for_selector(self.favourites_icon, timeout=10000).click()
         self.page.wait_for_selector(self.FAVOURITES_ADS_LINK, timeout=10000).click()
         assert self.page.wait_for_selector(self.favourite_ads_header).page.is_visible(self.favourite_ads_header), "Favourite ads not found"
 

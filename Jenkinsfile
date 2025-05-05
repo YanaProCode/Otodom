@@ -1,53 +1,54 @@
 pipeline {
-    agent any
-
-    environment {
-        PYTHON_PATH = 'C:\\Users\\Yana_Proshak\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
+    agent {
+        docker {
+            image 'python:3.10-slim'
+            args '-u root'
+        }
     }
-
+    environment {
+        ALLURE_RESULTS_DIR = 'allure-results'
+        ALLURE_REPORT_DIR = 'allure-report'
+    }
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/YanaProCode/Otodom.git'
+                checkout scm
             }
         }
-        stage('Setup') {
+        stage('Build Docker Image') {
             steps {
-                bat '''
-                %PYTHON_PATH% -m venv venv
-                call venv\\Scripts\\activate
-                pip install -r requirements.txt
-                '''
-            }
-        }
-        stage('Install Playwright Browsers') {
-            steps {
-                bat '''
-                call venv\\Scripts\\activate
-                playwright install
-                '''
+                script {
+                    docker.build('otodom-tests')
+                }
             }
         }
         stage('Run Tests') {
             steps {
-                bat '''
-                call venv\\Scripts\\activate
-                pytest --test-browser=chromium --test-tool=playwright --alluredir=allure-results
-                '''
+                script {
+                    docker.image('otodom-tests').inside {
+                        sh 'pytest --alluredir=${ALLURE_RESULTS_DIR}'
+                    }
+                }
             }
         }
         stage('Generate Allure Report') {
             steps {
-                bat '''
-                allure generate allure-results --clean -o allure-report
-                '''
+                script {
+                    docker.image('otodom-tests').inside {
+                        sh 'allure generate ${ALLURE_RESULTS_DIR} -o ${ALLURE_REPORT_DIR} --clean'
+                    }
+                }
             }
         }
-    }
-
-    post {
-        always {
-            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+        stage('Publish Allure Report') {
+            steps {
+                allure([
+                    includeProperties: false,
+                    jdk: '',
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [[path: "${ALLURE_RESULTS_DIR}"]]
+                ])
+            }
         }
     }
 }
