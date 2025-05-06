@@ -2,6 +2,7 @@ FROM python:3.10-slim
 
 RUN apt-get update && apt-get install -y \
     gnome-browser-connector \
+    wget \
     && apt-get clean
 
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
@@ -23,12 +24,9 @@ RUN wget -q -O - https://dl.bintray.com/qameta/generic/gpg.key | apt-key add - \
     && apt-get install -y allure
 
 RUN pip install webdriver-manager
-
 RUN pip install playwright
 RUN playwright install
-
 RUN pip install selenium
-
 RUN pip install pytest pytest-allure-adaptor
 
 CMD ["pytest", "--alluredir=allure-results"]
