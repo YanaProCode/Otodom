@@ -17,9 +17,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app
 
-RUN wget -q -O /tmp/allure-2.13.8.tgz https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.13.8/allure-commandline-2.13.8.tgz \
-    && tar -zxvf /tmp/allure-2.13.8.tgz -C /opt/ \
-    && ln -s /opt/allure-2.13.8/bin/allure /usr/bin/allure
+RUN wget -q -O /tmp/allure-2.34.0.tgz https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.34.0/allure-commandline-2.34.0.tgz \
+    && tar -zxvf /tmp/allure-2.34.0.tgz -C /opt/ \
+    && ln -s /opt/allure-2.34.0/bin/allure /usr/bin/allure
 
 RUN pip install webdriver-manager
 RUN pip install playwright
