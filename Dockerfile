@@ -13,12 +13,6 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearm
     && apt-get update \
     && apt-get install -y google-chrome-stable
 
-# Установка Firefox через PPA
-RUN apt-get update && apt-get install -y software-properties-common \
-    && add-apt-repository -y ppa:mozillateam/ppa \
-    && apt-get update \
-    && apt-get install -y firefox
-
 # Копирование и установка зависимостей Python
 COPY requirements.txt /app/requirements.txt
 WORKDIR /app
