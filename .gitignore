@@ -1,2 +1,5 @@
-allure-results
+allure-results/
 old_Jenkinsfile
+.idea/
+__pycache__/
+*.pyc
