@@ -29,7 +29,7 @@ def page(request):
 
     if tool == 'playwright':
         with sync_playwright() as p:
-            browser = getattr(p, browser_type).launch(headless=False, slow_mo=500)
+            browser = getattr(p, browser_type).launch(headless=True, slow_mo=500)
             context = browser.new_context(
                 viewport={"width": 1920, "height": 1080}
             )
