@@ -30,4 +30,6 @@ RUN pip install pytest pytest-allure-adaptor
 RUN sed -i 's/collections.Mapping/collections.abc.Mapping/' /usr/local/lib/python3.10/site-packages/namedlist.py
 RUN sed -i 's/collections.Sequence/collections.abc.Sequence/' /usr/local/lib/python3.10/site-packages/namedlist.py
 
+RUN sed -i '/--alluredir/d' /usr/local/lib/python3.10/site-packages/allure/pytest_plugin.py
+
 CMD ["pytest", "--alluredir=allure-results"]
