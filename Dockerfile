@@ -22,8 +22,8 @@ RUN wget -q -O /tmp/allure-2.34.0.tgz https://repo.maven.apache.org/maven2/io/qa
     && ln -s /opt/allure-2.34.0/bin/allure /usr/bin/allure
 
 RUN pip install webdriver-manager
-RUN pip install playwright
-RUN playwright install
+RUN pip install pytest playwright
+RUN playwright install --with-deps
 RUN pip install selenium
 RUN pip install pytest allure-pytest
 
